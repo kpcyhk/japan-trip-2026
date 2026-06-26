@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chill 住遊日本之旅 2026 - 互動手帳</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            left: 21px;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: #cbd5e1;
+            z-index: 0;
+        }
+        .timeline-item:last-child .timeline-line::before {
+            height: 20px;
+        }
+        .theme-ch1 { --chapter-color: #4f46e5; --chapter-bg: #e0e7ff; }
+        .theme-ch2 { --chapter-color: #059669; --chapter-bg: #d1fae5; }
+        .theme-ch3 { --chapter-color: #dd6b20; --chapter-bg: #ffedd5; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen pb-12">
+
+    <!-- Top Navigation Banner -->
+    <header class="glass-panel sticky top-0 z-50 px-4 py-3 shadow-sm border-b border-slate-200/80">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 p-2.5 rounded-xl text-white shadow-md shadow-indigo-200">
+                    <i data-lucide="compass" class="w-6 h-6 animate-spin-slow"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
+                        Chill 住遊日本之旅 2026
+                        <span class="text-xs font-medium bg-red-100 text-red-600 px-2 py-0.5 rounded-full border border-red-200">夏日慢遊提案</span>
+                    </h1>
+                    <p class="text-xs text-slate-500 font-medium flex items-center gap-1">
+                        <i data-lucide="calendar" class="w-3 h-3"></i> 1/8/2026 - 9/8/2026 • 快樂旅伴專屬手帳
+                    </p>
+                </div>
+            </div>
+            
+            <div class="flex bg-slate-200/70 p-1 rounded-xl w-full sm:w-auto">
+                <button onclick="switchView('itinerary')" id="tab-itinerary" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2 text-sm font-bold rounded-lg transition-all duration-200 bg-white text-indigo-700 shadow-sm">
+                    <i data-lucide="map" class="w-4 h-4"></i> 行程總覽
+                </button>
+                <button onclick="switchView('checklist')" id="tab-checklist" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2 text-sm font-bold rounded-lg transition-all duration-200 text-slate-600 hover:text-slate-900">
+                    <i data-lucide="clipboard-check" class="w-4 h-4"></i> 行前與物資
+                </button>
+                <button onclick="switchView('hotels')" id="tab-hotels" class="tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2 text-sm font-bold rounded-lg transition-all duration-200 text-slate-600 hover:text-slate-900">
+                    <i data-lucide="bed-double" class="w-4 h-4"></i> 專屬旅宿
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 mt-6">
+
+        <!-- VIEW 1: ITINERARY INTERACTIVE EXPLORER -->
+        <div id="view-itinerary" class="view-panel transition-all duration-300">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <!-- Chapter 1 Card -->
+                <div id="card-ch1" onclick="selectDay(1)" class="glass-panel cursor-pointer p-4 rounded-2xl border-l-4 border-indigo-600 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md bg-indigo-50/40">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold bg-indigo-100 text-indigo-700 px-2 py-1 rounded-md tracking-wider uppercase">Chapter 1</span>
+                        <div class="flex items-center gap-1 text-xs text-slate-500 font-semibold"><i data-lucide="car" class="w-3 h-3"></i> 自駕</div>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base">溫泉與自然</h3>
+                    <p class="text-xs text-slate-500 mt-1 mb-2">目的地: 箱根 (Day 1)</p>
+                    <div class="text-xs text-indigo-600 font-bold flex items-center gap-1">查看第 1 天明細 <i data-lucide="arrow-right" class="w-3 h-3"></i></div>
+                </div>
+
+                <!-- Chapter 2 Card -->
+                <div id="card-ch2" onclick="selectDay(2)" class="glass-panel cursor-pointer p-4 rounded-2xl border-l-4 border-emerald-600 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold bg-emerald-100 text-emerald-700 px-2 py-1 rounded-md tracking-wider uppercase">Chapter 2</span>
+                        <div class="flex items-center gap-1 text-xs text-slate-500 font-semibold"><i data-lucide="car" class="w-3 h-3"></i> 自駕</div>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base">富士山麓深呼吸</h3>
+                    <p class="text-xs text-slate-500 mt-1 mb-2">目的地: 富士五湖 (Day 2-5)</p>
+                    <div class="text-xs text-emerald-600 font-bold flex items-center gap-1">查看第 2-5 天明細 <i data-lucide="arrow-right" class="w-3 h-3"></i></div>
+                </div>
+
+                <!-- Chapter 3 Card -->
+                <div id="card-ch3" onclick="selectDay(6)" class="glass-panel cursor-pointer p-4 rounded-2xl border-l-4 border-amber-600 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold bg-amber-100 text-amber-700 px-2 py-1 rounded-md tracking-wider uppercase">Chapter 3</span>
+                        <div class="flex items-center gap-1 text-xs text-slate-500 font-semibold"><i data-lucide="train" class="w-3 h-3"></i> 大眾運輸</div>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base">城市與魔法</h3>
+                    <p class="text-xs text-slate-500 mt-1 mb-2">目的地: 東京市區 (Day 6-9)</p>
+                    <div class="text-xs text-amber-600 font-bold flex items-center gap-1">查看第 6-9 天明細 <i data-lucide="arrow-right" class="w-3 h-3"></i></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Day Navigation Sidebar tabs -->
+                <div class="lg:col-span-3 flex lg:flex-col gap-2 overflow-x-auto pb-2 lg:pb-0">
+                    <button onclick="selectDay(1)" id="btn-day-1" class="day-tab whitespace-nowrap flex-1 flex items-center justify-between gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all text-left glass-panel border-indigo-600 border-l-4 text-indigo-900 shadow-sm bg-indigo-50/50">
+                        <span>Day 1 • 初見箱根</span><i data-lucide="chevron-right" class="w-4 h-4 hidden lg:block"></i>
+                    </button>
+                    <button onclick="selectDay(2)" id="btn-day-2" class="day-tab whitespace-nowrap flex-1 flex items-center justify-between gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all text-left glass-panel hover:bg-slate-50 text-slate-700">
+                        <span>Day 2 • 大涌谷露營</span><i data-lucide="chevron-right" class="w-4 h-4 hidden lg:block"></i>
+                    </button>
+                    <button onclick="selectDay(3)" id="btn-day-3" class="day-tab whitespace-nowrap flex-1 flex items-center justify-between gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all text-left glass-panel hover:bg-slate-50 text-slate-700">
+                        <span>Day 3 • 逆富士晨光牧場</span><i data-lucide="chevron-right" class="w-4 h-4 hidden lg:block"></i>
+                    </button>
+                    <button onclick="selectDay(4)" id="btn-day-4" class="day-tab whitespace-nowrap flex-1 flex items-center justify-between gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all text-left glass-panel hover:bg-slate-50 text-slate-700">
+                        <span>Day 4 • 花之都大石公園</span><i data-lucide="chevron-right" class="w-4 h-4 hidden lg:block"></i>
+                    </button>
+                    <button onclick="selectDay(5)" id="btn-day-5" class="day-tab whitespace-nowrap flex-1 flex items-center justify-between gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all text-left glass-panel hover:bg-slate-50 text-slate-700">
+                        <span>Day 5 • 富士全景與市內觀光</span><i data-lucide="chevron-right" class="w-4 h-4 hidden lg:block"></i>
+                    </button>
+                    <button onclick="selectDay(6)" id="btn-day-6" class="day-tab whitespace-nowrap flex-1 flex items-center justify-between gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all text-left glass-panel hover:bg-slate-50 text-slate-700">
+                        <span>Day 6 • 哈利波特影城</span><i data-lucide="chevron-right" class="w-4 h-4 hidden lg:block"></i>
+                    </button>
+                    <button onclick="selectDay(7)" id="btn-day-7" class="day-tab whitespace-nowrap flex-1 flex items-center justify-between gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all text-left glass-panel hover:bg-slate-50 text-slate-700">
+                        <span>Day 7 • 迪士尼奇幻海洋</span><i data-lucide="chevron-right" class="w-4 h-4 hidden lg:block"></i>
+                    </button>
+                    <button onclick="selectDay(8)" id="btn-day-8" class="day-tab whitespace-nowrap flex-1 flex items-center justify-between gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all text-left glass-panel hover:bg-slate-50 text-slate-700">
+                        <span>Day 8 • 自由探索巡禮</span><i data-lucide="chevron-right" class="w-4 h-4 hidden lg:block"></i>
+                    </button>
+                    <button onclick="selectDay(9)" id="btn-day-9" class="day-tab whitespace-nowrap flex-1 flex items-center justify-between gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all text-left glass-panel hover:bg-slate-50 text-slate-700">
+                        <span>Day 9 • 購物與返港</span><i data-lucide="chevron-right" class="w-4 h-4 hidden lg:block"></i>
+                    </button>
+                </div>
+
+                <!-- Timeline Panel View Area -->
+                <div class="lg:col-span-9 glass-panel p-6 rounded-3xl shadow-sm relative">
+                    <div class="border-b border-slate-200 pb-4 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div>
+                            <span id="timeline-chapter-badge" class="text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-200 px-2.5 py-1 rounded-md tracking-wide uppercase inline-block mb-1.5">Chapter 1 • 溫泉與自然</span>
+                            <h2 id="timeline-title" class="text-2xl font-black text-slate-900 tracking-tight">Day 1 | 初見箱根: 湖畔與藝術的相遇</h2>
+                        </div>
+                        <div id="timeline-transport-badge" class="flex items-center gap-1.5 bg-slate-100 border border-slate-200 text-slate-600 px-3 py-1.5 rounded-xl text-xs font-bold">
+                            <i data-lucide="car" class="w-4 h-4 text-indigo-600"></i> 自駕模式
+                        </div>
+                    </div>
+
+                    <div id="timeline-events-container" class="space-y-0 relative">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 2: TRAVEL CHECKLIST -->
+        <div id="view-checklist" class="view-panel hidden transition-all duration-300">
+            <div class="glass-panel p-6 rounded-3xl mb-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="border-b md:border-b-0 md:border-r border-slate-200 pb-4 md:pb-0">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">出發環境氣候</p>
+                    <h4 class="text-lg font-black text-amber-600 flex items-center justify-center gap-1.5"><i data-lucide="sun" class="w-5 h-5 animate-pulse"></i> 8月盛夏酷暑</h4>
+                </div>
+                <div class="border-b md:border-b-0 md:border-r border-slate-200 pb-4 md:pb-0">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">熱門搶票視窗</p>
+                    <h4 class="text-lg font-black text-indigo-600">提前 2-3 個月</h4>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">準備與核對狀態</p>
+                    <h4 id="checklist-progress" class="text-lg font-black text-slate-800">0 / 11 已確認</h4>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-panel p-6 rounded-3xl">
+                    <h3 class="text-lg font-black text-slate-900 mb-4 pb-2 border-b border-slate-100 flex items-center gap-2">
+                        <i data-lucide="shield-alert" class="w-5 h-5 text-red-500"></i> 核心證件與夏日通關物資
+                    </h3>
+                    <div class="space-y-3" id="checklist-group-core"></div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl">
+                    <h3 class="text-lg font-black text-slate-900 mb-4 pb-2 border-b border-slate-100 flex items-center gap-2">
+                        <i data-lucide="ticket" class="w-5 h-5 text-indigo-600"></i> 行前預約雷達門票
+                    </h3>
+                    <div class="space-y-3" id="checklist-group-tickets"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 3: ACCOMMODATION SHOWCASE -->
+        <div id="view-hotels" class="view-panel hidden transition-all duration-300">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Hotel 1 -->
+                <div class="glass-panel rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-slate-100">
+                    <div class="bg-gradient-to-r from-indigo-900 to-slate-800 p-5 text-white flex justify-between items-start">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest bg-indigo-500/30 text-indigo-200 border border-indigo-400/30 px-2 py-0.5 rounded">Day 1 經典溫泉</span>
+                            <h3 class="text-xl font-black mt-1">箱根季之湯雪月花</h3>
+                        </div>
+                        <a href="https://www.hotespa.net/hotels/setsugetsuka/" target="_blank" class="text-xs bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl font-bold flex items-center gap-1 transition-all shadow-sm">
+                            官方連結 <i data-lucide="external-link" class="w-3 h-3"></i>
+                        </a>
+                    </div>
+                    <div class="p-5 space-y-4">
+                        <div class="flex items-start gap-3">
+                            <div class="bg-indigo-50 p-2 rounded-xl text-indigo-600 mt-0.5"><i data-lucide="sparkles" class="w-4 h-4"></i></div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">房型設施亮點</h4>
+                                <p class="text-sm font-semibold text-slate-800 mt-0.5">強羅站旁，客房均設有專屬私人露天風呂</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="bg-indigo-50 p-2 rounded-xl text-indigo-600 mt-0.5"><i data-lucide="utensils" class="w-4 h-4"></i></div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">餐飲風味饗宴</h4>
+                                <p class="text-sm text-slate-600 mt-0.5">提供精緻和食宴席晚餐（四季彩火鍋懷石或和牛涮涮鍋套餐）。泡湯後提供免費小食、益力多與冰條。</p>
+                                <p class="text-xs text-indigo-600 font-bold mt-2 bg-indigo-50 px-2 py-1 rounded inline-block">21:30 宵夜限定：酒店免費提供「夜鳴きそば」醬油拉麵</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hotel 2 -->
+                <div class="glass-panel rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-slate-100">
+                    <div class="bg-gradient-to-r from-emerald-900 to-slate-800 p-5 text-white flex justify-between items-start">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 px-2 py-0.5 rounded">Day 2 - 3 奢華露營</span>
+                            <h3 class="text-xl font-black mt-1">Vision Glamping Resort & Spa 山中湖</h3>
+                        </div>
+                        <a href="https://vision-glamping.com/yamanakako" target="_blank" class="text-xs bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl font-bold flex items-center gap-1 transition-all shadow-sm">
+                            官方連結 <i data-lucide="external-link" class="w-3 h-3"></i>
+                        </a>
+                    </div>
+                    <div class="p-5 space-y-4">
+                        <div class="flex items-start gap-3">
+                            <div class="bg-emerald-50 p-2 rounded-xl text-emerald-600 mt-0.5"><i data-lucide="sparkles" class="w-4 h-4"></i></div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">營地硬體亮點</h4>
+                                <p class="text-sm font-semibold text-slate-800 mt-0.5">連住兩晚！獨立私人桑拿、露天風呂與極致星空觀測空間</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="bg-emerald-50 p-2 rounded-xl text-emerald-600 mt-0.5"><i data-lucide="flame" class="w-4 h-4"></i></div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">餐飲與補給</h4>
+                                <p class="text-sm text-slate-600 mt-0.5">Day 2 安排戶外星空 BBQ 烤肉（營地完整提供設備及食物）。Day 3 享用營地特色晚餐。</p>
+                                <p class="text-xs text-emerald-700 font-bold mt-2 bg-emerald-50 px-2 py-1 rounded inline-block">補給建議：自駕前往「OGINO」或「MaxValu」超市採買新鮮水果、菜、零食</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hotel 3 -->
+                <div class="glass-panel rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-slate-100">
+                    <div class="bg-gradient-to-r from-teal-900 to-slate-800 p-5 text-white flex justify-between items-start">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest bg-teal-500/30 text-teal-200 border border-teal-400/30 px-2 py-0.5 rounded">Day 4 富士名景</span>
+                            <h3 class="text-xl font-black mt-1">富士景觀飯店 (Fuji View Hotel)</h3>
+                        </div>
+                        <a href="https://www.fujiview.jp/?utm_source=google&utm_medium=business_profile&utm_campaign=website" target="_blank" class="text-xs bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl font-bold flex items-center gap-1 transition-all shadow-sm">
+                            官方連結 <i data-lucide="external-link" class="w-3 h-3"></i>
+                        </a>
+                    </div>
+                    <div class="p-5 space-y-4">
+                        <div class="flex items-start gap-3">
+                            <div class="bg-teal-50 p-2 rounded-xl text-teal-600 mt-0.5"><i data-lucide="eye" class="w-4 h-4"></i></div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">定位點評</h4>
+                                <p class="text-sm font-semibold text-slate-800 mt-0.5">傳統優質飯店，坐擁河口湖畔第一排絕佳的名勝視野與優雅中庭</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="bg-teal-50 p-2 rounded-xl text-teal-600 mt-0.5"><i data-lucide="info" class="w-4 h-4"></i></div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">餐飲資訊</h4>
+                                <p class="text-sm text-slate-600 mt-0.5">18:00 辦理入住後，晚餐待定（可在飯店或鄰近河口湖周邊大啖特色美食）。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hotel 4 -->
+                <div class="glass-panel rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-slate-100">
+                    <div class="bg-gradient-to-r from-amber-900 to-slate-800 p-5 text-white flex justify-between items-start">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest bg-amber-500/30 text-amber-200 border border-amber-400/30 px-2 py-0.5 rounded">Day 5 - 8 都會心臟</span>
+                            <h3 class="text-xl font-black mt-1">京橋三井花園酒店</h3>
+                        </div>
+                        <a href="https://www.gardenhotels.co.jp/kyobashi/tw/?gad_source=1" target="_blank" class="text-xs bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl font-bold flex items-center gap-1 transition-all shadow-sm">
+                            官方連結 <i data-lucide="external-link" class="w-3 h-3"></i>
+                        </a>
+                    </div>
+                    <div class="p-5 space-y-4">
+                        <div class="flex items-start gap-3">
+                            <div class="bg-amber-50 p-2 rounded-xl text-amber-600 mt-0.5"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">地理優勢</h4>
+                                <p class="text-sm font-semibold text-slate-800 mt-0.5">Mitsui Garden Hotel Kyobashi，位於東京車站核心樞紐圈內，出遊極度高效</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="bg-amber-50 p-2 rounded-xl text-amber-600 mt-0.5"><i data-lucide="subway" class="w-4 h-4"></i></div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">都內行程串聯</h4>
+                                <p class="text-sm text-slate-600 mt-0.5">完美銜接 Day 5 市區觀光入住，以及 Day 6-8 哈利波特與迪士尼的鐵路往返。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        const travelData = {
+            1: {
+                title: "Day 1 | 箱根打卡、觀光、一泊兩食",
+                chapter: "Chapter 1 • 溫泉與自然",
+                chapterIdx: 1,
+                transport: "自駕模式 (路程約 2 小時，注意過路費 ETC)",
+                icon: "car",
+                events: [
+                    { time: "05:00", name: "<a href='https://tokyo-haneda.com/' target='_blank' class='text-indigo-600 font-bold hover:underline inline-flex items-center gap-1'>羽田機場落機 <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "辦理入境、提取行李。" },
+                    { time: "07:00", name: "機場出發去箱根", detail: "預計 8:45 ~ 9:00 左右抵達箱根。路程約 2 小時，請準備好高速 ETC 晶片卡。" },
+                    { time: "09:00", name: "<a href='https://www.bthjapan.com/hakone.php' target='_blank' class='text-indigo-600 font-bold hover:underline inline-flex items-center gap-1'>早餐: Bakery & Table 箱根 <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "享受美味烘焙，湖畔景色一流 (09:00 - 10:15)。" },
+                    { time: "10:15", name: "<a href='http://hakonejinja.or.jp/' target='_blank' class='text-indigo-600 font-bold hover:underline inline-flex items-center gap-1'>箱根神社 ➔ 平和鳥居 <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "水上鳥居，從早餐店直接走過去（就在隔壁不遠處）。(10:15 - 11:15)" },
+                    { time: "11:15", name: "午餐: La Terrazza 蘆之湖", detail: "建議在 11:45 之前或 13:15 之後，避開最核心的 Peak hour。 (11:15 - 12:45)" },
+                    { time: "12:45", name: "開車前往雕刻之森", detail: "*備案：若 11:15 先前往雕刻之森，則改為 13:30 於美術館附近的 Chokoku-no-Mori Dining 午餐。 (12:45 - 13:05)" },
+                    { time: "13:05", name: "<a href='https://www.hakone-oam.or.jp/' target='_blank' class='text-indigo-600 font-bold hover:underline inline-flex items-center gap-1'>雕刻之森美術館 <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "欣賞精彩的戶外大型藝術展品。(13:05 - 15:00)" },
+                    { time: "15:00", name: "下山前往箱根湯本", detail: "開車下山前往箱根湯本商店街。(15:00 - 15:20)" },
+                    { time: "15:20", name: "<a href='https://www.hakonenavi.jp/international/tw/spot/330' target='_blank' class='text-indigo-600 font-bold hover:underline inline-flex items-center gap-1'>箱根湯本商店街 <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "一串現炸魚餅、食個軟雪糕、買好手信。🚗首選導航至：「臨時觀光客駐車場（箱根町庁舎下）」。停好車後再一起步行到商店街。(15:20 - 16:20)" },
+                    { time: "17:00", name: "<a href='https://www.hotespa.net/hotels/setsugetsuka/' target='_blank' class='text-indigo-600 font-bold hover:underline inline-flex items-center gap-1'>入住: 箱根季之湯雪月花 <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "強羅站旁核心地段。全客房房內均附露天風呂、大湯屋等。" },
+                    { time: "17:30", name: "晚餐: 酒店內和食宴席", detail: "精緻精選二選一：1. 四季彩火鍋與日本懷石料理 或 2. 和牛涮涮鍋壽司套餐。" },
+                    { time: "21:30", name: "宵夜: 醬油拉麵", detail: "酒店特別免費提供深夜「夜鳴きそば」醬油拉麵。" }
+                ]
+            },
+            2: {
+                title: "Day 2 | 大涌谷觀光、山中湖 Glamping",
+                chapter: "Chapter 2 • 富士山麓深呼吸",
+                chapterIdx: 2,
+                transport: "自駕模式",
+                icon: "car",
+                events: [
+                    { time: "07:00", name: "早餐", detail: "酒店餐廳提供，因位置較少，強烈建議提早起床用餐。" },
+                    { time: "08:15", name: "集合 & Check out", detail: "辦理退房，準備準時自駕出發。" },
+                    { time: "08:30", name: "<a href='https://www.hakoneropeway.co.jp/' target='_blank' class='text-emerald-600 font-bold hover:underline inline-flex items-center gap-1'>早雲山 ➔ 大涌谷 <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "去早雲山泊車轉纜車。大涌谷驛站禮品店 (必吃黑蛋)。早雲山樓上 CU-MO 箱根（有限定明信片）。(08:30 - 10:30)" },
+                    { time: "10:45", name: "取車出發前往御殿場", detail: "開車前往 Gotemba Premium Outlets。" },
+                    { time: "11:40", name: "<a href='https://www.premiumoutlets.co.jp/gotemba/' target='_blank' class='text-emerald-600 font-bold hover:underline inline-flex items-center gap-1'>御殿場 Outlet + 午餐 <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "在 Outlet 內的美食廣場或餐廳各自/集體午餐，並行街買嘢。" },
+                    { time: "16:00", name: "集合出發開往山中湖", detail: "Outlet 停車場集合，出發。" },
+                    { time: "16:45", name: "<a href='https://vision-glamping.com/yamanakako' target='_blank' class='text-emerald-600 font-bold hover:underline inline-flex items-center gap-1'>入住: Vision Glamping Resort & Spa <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "辦理 Check-in。入住頂級山中湖營地（連住兩晚），準備享受豪華露營的 BBQ 晚餐與私人空間。" }
+                ]
+            },
+            3: {
+                title: "Day 3 | 富士五湖深度遊",
+                chapter: "Chapter 2 • 富士山麓深呼吸",
+                chapterIdx: 2,
+                transport: "自駕模式",
+                icon: "car",
+                events: [
+                    { time: "08:45", name: "湖畔觀光打卡", detail: "長池親水公園 / 白鳥之浜 / 平野之浜。餵天鵝、拍順光富士山。接著把車開到平野之浜湖邊拍大合照。(08:45 - 10:30)" },
+                    { time: "11:00", name: "午餐: 山中湖畔", detail: "推薦：甲州ほうとう小作 (小作餺飥烏龍麵) 山中湖店，有超大停車場與榻榻米大座位。(11:00 - 12:30)" },
+                    { time: "12:45", name: "下午茶: Paper Moon 或 The Park", detail: "食完鹹的剛好食甜品，此時是咖啡店剛開完的第一輪空檔。(12:45 - 14:15)" },
+                    { time: "14:30", name: "<a href='http://www.hananomiyakokouen.jp/' target='_blank' class='text-emerald-600 font-bold hover:underline inline-flex items-center gap-1'>山中湖花之都公園 <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "從咖啡店開車去只需 5-8 分鐘。欣賞 8 月滿山谷的向日葵花海。(14:30 - 16:00)" },
+                    { time: "16:00", name: "回營地休息及晚飯", detail: "回 Vision Glamping 享受第二晚的設施、泡湯，準備露營燒烤。" }
+                ]
+            },
+            4: {
+                title: "Day 4 | 山中湖、河口湖景點",
+                chapter: "Chapter 2 • 富士山麓深呼吸",
+                chapterIdx: 2,
+                transport: "自駕模式",
+                icon: "car",
+                events: [
+                    { time: "09:00", name: "Vision Glamping 退房出發", detail: "收拾全部行李，正式告別營地。" },
+                    { time: "10:00", name: "<a href='http://www.fkchannel.jp/oishipark/' target='_blank' class='text-emerald-600 font-bold hover:underline inline-flex items-center gap-1'>大石公園 & 自然生活館 <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "拍攝富士山與掃帚草、買特產手工果醬。(10:00 - 11:30)" },
+                    { time: "11:30", name: "前往馬飼野牧場", detail: "車程約 40-45 分鐘。(11:30 - 12:15)" },
+                    { time: "12:15", name: "<a href='https://www.makaino.com/' target='_blank' class='text-emerald-600 font-bold hover:underline inline-flex items-center gap-1'>馬飼野牧場 <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "園內午餐 + 玩樂 3.5 小時（餵羊、富士山背景鞦韆、新鮮牛奶/雪糕）。(12:15 - 15:45)" },
+                    { time: "15:45", name: "驅車前往酒店", detail: "前往當晚住宿酒店。(15:45 - 16:30)" },
+                    { time: "16:30", name: "<a href='https://www.fujiview.jp/?utm_source=google&utm_medium=business_profile&utm_campaign=website' target='_blank' class='text-emerald-600 font-bold hover:underline inline-flex items-center gap-1'>入住: 富士景觀飯店 <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "登記入住 Fuji View Hotel。享受這家傳統優質飯店。" },
+                    { time: "晚上", name: "晚餐 (暫定)", detail: "1. 餺飥不動「東戀路店」(富士山地區必吃傳奇) 或 2. Moose Hills Burger。" }
+                ]
+            },
+            5: {
+                title: "Day 5 | 河口湖景點、返回東京市區",
+                chapter: "Chapter 2 • 富士山麓深呼吸",
+                chapterIdx: 2,
+                transport: "自駕模式 ➔ 轉乘都內大眾地下鐵路",
+                icon: "shuffle",
+                events: [
+                    { time: "07:00", name: "早餐", detail: "在富士景觀飯店內享用精緻的酒店餐廳早點。" },
+                    { time: "08:15", name: "集合 check-out", detail: "辦理退房，將行李上車，準備向東京出發。" },
+                    { time: "08:30", name: "<a href='https://www.japan.travel/hk/spot/1328/' target='_blank' class='text-emerald-600 font-bold hover:underline inline-flex items-center gap-1'>天上山公園富士全景纜車 <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "天上山公園展望台 / 體驗山頂網紅盪鞦韆。" },
+                    { time: "11:00", name: "返回東京還車", detail: "預計路程約 2 小時。進入都內請特別留意複雜的市區車流。" },
+                    { time: "中午", name: "午餐: 市區", detail: "建議：拉麵 / 壽司 / 其他。" },
+                    { time: "下午", name: "市內觀光 / 購物 / 下午茶", detail: "到達市區後先到 <a href='https://www.gardenhotels.co.jp/kyobashi/tw/' target='_blank' class='text-emerald-700 font-bold underline inline-flex items-center gap-0.5'>京橋三井花園酒店 <i data-lucide=\"external-link\" class=\"w-2.5 h-2.5\"></i></a> 存放行李，隨後展開自由活動。" },
+                    { time: "晚上", name: "晚餐", detail: "建議：居酒屋 🏮" },
+                    { time: "-", name: "酒店 Check in", detail: "返回市中心的京橋三井花園酒店辦理入住，安頓休息。" }
+                ]
+            },
+            6: {
+                title: "Day 6 | 魔法探索：哈利波特影城",
+                chapter: "Chapter 3 • 城市與魔法",
+                chapterIdx: 3,
+                transport: "大眾地下鐵路系統",
+                icon: "train",
+                events: [
+                    { time: "早上", name: "早餐: 酒店附近", detail: "在酒店附近自由尋訪享用早餐。" },
+                    { time: "09:30", name: "搭地鐵前往影城", detail: "交通方式：東京丸之內線（M16）—>池袋站（M25) —> 西武池袋線（直達約15分鐘）—>豐島園站。" },
+                    { time: "待定", name: "<a href='https://www.wbstudiotour.jp/en/' target='_blank' class='text-amber-600 font-bold hover:underline inline-flex items-center gap-1'>東京哈利波特影城 <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "此熱門行程需提前 2-3 個月搶購預售門票。走進震撼的霍格華茲魔法電影幕後世界。" },
+                    { time: "晚上", name: "晚餐: 池袋或新宿", detail: "建議：爐端燒 / 蟹放題 / 燒肉放題。(+/- 買定明天前往迪士尼的早餐及飲品)" }
+                ]
+            },
+            7: {
+                title: "Day 7 | 東京迪士尼海洋夢幻之旅",
+                chapter: "Chapter 3 • 城市與魔法",
+                chapterIdx: 3,
+                transport: "JR 鐵路系統 (東京車站 ➔ 舞濱車站約 20 分鐘)",
+                icon: "train",
+                events: [
+                    { time: "06:45", name: "搭鐵路出發", detail: "JR 東京車站 <-> JR 舞濱車站 (約 20 分鐘)。為全天高強度迪士尼大作戰補充能量出發。" },
+                    { time: "全日", name: "<a href='https://www.google.com/search?q=Tokyo+DisneySea+Official+Site' target='_blank' class='text-amber-600 font-bold hover:underline inline-flex items-center gap-1'>迪士尼海洋世界全日狂歡 <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "強烈建議提早抵達排隊入園（門票務必提前 2-3 個月預購）。午餐及晚餐均在園內自由享用。" }
+                ]
+            },
+            8: {
+                title: "Day 8 | 自由活動與美食饗宴",
+                chapter: "Chapter 3 • 城市與魔法",
+                chapterIdx: 3,
+                transport: "東京都內大眾運輸交通",
+                icon: "train",
+                events: [
+                    { time: "全日", name: "自由活動", detail: "購物、觀光，今日行程具備最高彈性！" },
+                    { time: "晚上", name: "重磅告別晚宴", detail: "建議：Omakase 或 人形町今半壽喜燒（建議安排包廂）。" }
+                ]
+            },
+            9: {
+                title: "Day 9 | 購物與回程: 滿載回港",
+                chapter: "Chapter 3 • 城市與魔法",
+                chapterIdx: 3,
+                transport: "利木津巴士出機場 (KKday 提前預訂)",
+                icon: "bus",
+                events: [
+                    { time: "早上", name: "早餐: 待定 ➔ 附近最後血拼", detail: "辦理退房，將大量戰利品打包塞滿行李箱。前往鄰近的大丸百貨或東京車站一番街進行最後的手信大採購。" },
+                    { time: "中午", name: "巴士出機場 (Limousine Bus)", detail: "透過 KKday 提前預訂好利木津巴士票（每位約 HK$150）。每人可大方攜帶 2 件不超過 30 公斤的重型行李，直達航廈。" },
+                    { time: "17:05", name: "<a href='https://www.tokyo-narita.jp/' target='_blank' class='text-amber-600 font-bold hover:underline inline-flex items-center gap-1'>成田國際機場 (NRT) ➔ 香港 <i data-lucide=\"external-link\" class=\"w-3 h-3\"></i></a>", detail: "抵達 Narita Airport Terminal 2（第二航廈）。依序辦理登機，乘坐香港快運航空 UO871 航班安全回港，結束完美的日本之旅！" }
+                ]
+            }
+        };
+
+        const initialChecklist = [
+            { id: 1, type: "core", text: "護照 / 國際駕照 (IDP)：出發前務必確認 IDP 仍在有效期限之內", checked: false },
+            { id: 2, type: "core", text: "日幣現金 / VISA / MASTER 信用卡系統：準備足額日圓現鈔並確保卡片暢通", checked: false },
+            { id: 3, type: "core", text: "實體紙本票券：將所有預約電子門票與訂房證明提前印出紙本備用", checked: false },
+            { id: 4, type: "core", text: "大容量行動電源：防範都內與樂園長時間使用手機拍照與導航耗電", checked: false },
+            { id: 5, type: "core", text: "夏日對策防曬：應對8月盛夏酷暑，攜帶防曬霜、太陽眼鏡與遮陽帽", checked: false },
+            { id: 6, type: "core", text: "空塑膠飲水樽 + 零食：都內及迪士尼走動頻繁，攜帶水樽隨時補充水分", checked: false },
+            { id: 7, type: "tickets", text: "東京哈利波特影城門票 (High Priority 務必提前 2-3 個月搶票)", checked: true },
+            { id: 8, type: "tickets", text: "東京迪士尼海洋 (DisneySea) 門票並下載官方 App (High Priority 提前2-3個月預訂)", checked: false },
+            { id: 9, type: "tickets", text: "景點門票預約：箱根雕刻森林美術館、山中湖花之都公園、馬飼野牧場", checked: false },
+            { id: 10, type: "tickets", text: "機場巴士預約：KKday 利木津機場巴士 (每位 HK$150)", checked: false },
+            { id: 11, type: "tickets", text: "纜車對策確認：早雲山大涌谷登山纜車(來回)、天上山全景纜車(來回)", checked: false }
+        ];
+
+        let appState = {
+            activeView: 'itinerary',
+            selectedDay: 1,
+            checklist: JSON.parse(localStorage.getItem('japan2026_checklist_v2')) || initialChecklist
+        };
+
+        function switchView(viewName) {
+            appState.activeView = viewName;
+            document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`view-${viewName}`).classList.remove('hidden');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2 text-sm font-bold rounded-lg transition-all duration-200 text-slate-600 hover:text-slate-900";
+            });
+            const activeTab = document.getElementById(`tab-${viewName}`);
+            if (activeTab) {
+                activeTab.className = "tab-btn flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2 text-sm font-bold rounded-lg transition-all duration-200 bg-white text-indigo-700 shadow-sm";
+            }
+        }
+
+        function selectDay(dayNumber) {
+            appState.selectedDay = dayNumber;
+            const currentDayData = travelData[dayNumber];
+            
+            document.getElementById('timeline-title').innerHTML = currentDayData.title;
+            document.getElementById('timeline-chapter-badge').innerText = currentDayData.chapter;
+            
+            const containerEl = document.getElementById('view-itinerary');
+            containerEl.classList.remove('theme-ch1', 'theme-ch2', 'theme-ch3');
+            containerEl.classList.add(`theme-ch${currentDayData.chapterIdx}`);
+
+            const transBadge = document.getElementById('timeline-transport-badge');
+            transBadge.innerHTML = `<i data-lucide="${currentDayData.icon}" class="w-4 h-4"></i> ${currentDayData.transport}`;
+
+            const eventsContainer = document.getElementById('timeline-events-container');
+            eventsContainer.innerHTML = ''; 
+
+            currentDayData.events.forEach((evt) => {
+                const node = document.createElement('div');
+                node.className = 'timeline-item flex gap-4 relative pb-6 group';
+                
+                node.innerHTML = `
+                    <div class="timeline-line flex flex-col items-center relative">
+                        <div class="w-11 h-11 rounded-xl bg-slate-100 group-hover:bg-white text-slate-700 border-2 border-slate-300 flex items-center justify-center font-black text-xs transition-colors duration-200 z-10 shadow-sm px-1 text-center truncate">
+                            ${evt.time}
+                        </div>
+                    </div>
+                    <div class="flex-1 bg-white/60 group-hover:bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm transition-all duration-200">
+                        <h4 class="font-bold text-slate-900 text-base flex items-center gap-2">${evt.name}</h4>
+                        <p class="text-sm text-slate-600 mt-1 leading-relaxed">${evt.detail}</p>
+                    </div>
+                `;
+                eventsContainer.appendChild(node);
+            });
+
+            document.querySelectorAll('.day-tab').forEach(tab => {
+                tab.className = "day-tab whitespace-nowrap flex-1 flex items-center justify-between gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all text-left glass-panel hover:bg-slate-50 text-slate-700";
+            });
+            
+            let activeColorClass = 'border-indigo-600 text-indigo-900 bg-indigo-50/50';
+            if(currentDayData.chapterIdx === 2) activeColorClass = 'border-emerald-600 text-emerald-900 bg-emerald-50/50';
+            if(currentDayData.chapterIdx === 3) activeColorClass = 'border-amber-600 text-amber-900 bg-amber-50/50';
+            
+            const activeBtn = document.getElementById(`btn-day-${dayNumber}`);
+            if(activeBtn) {
+                activeBtn.className = `day-tab whitespace-nowrap flex-1 flex items-center justify-between gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all text-left glass-panel border-l-4 ${activeColorClass} shadow-sm`;
+            }
+
+            lucide.createIcons();
+        }
+
+        function toggleChecklistItem(itemId) {
+            appState.checklist = appState.checklist.map(item => {
+                if(item.id === itemId) return { ...item, checked: !item.checked };
+                return item;
+            });
+            localStorage.setItem('japan2026_checklist_v2', JSON.stringify(appState.checklist));
+            renderChecklists();
+        }
+
+        function renderChecklists() {
+            const coreContainer = document.getElementById('checklist-group-core');
+            const ticketsContainer = document.getElementById('checklist-group-tickets');
+            
+            coreContainer.innerHTML = '';
+            ticketsContainer.innerHTML = '';
+            let totalCheckedCount = 0;
+
+            appState.checklist.forEach(item => {
+                if(item.checked) totalCheckedCount++;
+                const rowNode = document.createElement('div');
+                rowNode.className = `flex items-start gap-3 p-3 rounded-xl border transition-all cursor-pointer ${item.checked ? 'bg-slate-100/70 border-slate-200 opacity-60' : 'bg-white border-slate-200/80 hover:border-slate-300 shadow-sm'}`;
+                rowNode.setAttribute('onclick', `toggleChecklistItem(${item.id})`);
+
+                rowNode.innerHTML = `
+                    <div class="mt-0.5 flex items-center justify-center">
+                        <input type="checkbox" ${item.checked ? 'checked' : ''} class="w-4 h-4 rounded text-indigo-600 border-slate-300 pointer-events-none">
+                    </div>
+                    <div class="text-sm font-semibold text-slate-800 tracking-tight leading-snug">
+                        ${item.text}
+                    </div>
+                `;
+
+                if(item.type === 'core') {
+                    coreContainer.appendChild(rowNode);
+                } else {
+                    ticketsContainer.appendChild(rowNode);
+                }
+            });
+
+            document.getElementById('checklist-progress').innerText = `${totalCheckedCount} / ${appState.checklist.length} 已確認`;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            selectDay(1);
+            renderChecklists();
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
