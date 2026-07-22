@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japan Self-Drive Travel Itinerary 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        jp: {
+                            red: '#e63946',
+                            navy: '#1d3557',
+                            light: '#f8fafc',
+                            accent: '#3b82f6',
+                            gold: '#d97706'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .stop-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .stop-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .toast-notification {
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .toast-notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Top Hero Banner -->
+    <header class="relative bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white overflow-hidden shadow-md">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 relative z-10">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-semibold tracking-wide uppercase mb-3">
+                        <i class="fa-solid fa-car"></i> Japan Self-Drive Route
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
+                        Hakone, Fuji & Tokyo Guide
+                    </h1>
+                    <p class="text-slate-300 mt-2 text-sm sm:text-base max-w-2xl">
+                        Interactive 5-day driving itinerary with embedded maps, mapcodes, and tap-to-navigate links.
+                    </p>
+                </div>
+                
+                <!-- Trip Quick Stats -->
+                <div class="flex flex-wrap items-center gap-3 bg-white/10 backdrop-blur-md border border-white/10 p-3.5 rounded-2xl text-xs sm:text-sm">
+                    <div class="px-3 py-1.5 text-center">
+                        <span class="block text-xl font-bold text-white">5</span>
+                        <span class="text-slate-300 text-xs">Days</span>
+                    </div>
+                    <div class="w-px h-8 bg-white/20"></div>
+                    <div class="px-3 py-1.5 text-center">
+                        <span class="block text-xl font-bold text-white" id="total-stops-count">20</span>
+                        <span class="text-slate-300 text-xs">Stops</span>
+                    </div>
+                    <div class="w-px h-8 bg-white/20"></div>
+                    <div class="px-3 py-1.5 text-center">
+                        <span class="block text-xl font-bold text-emerald-400">ETC</span>
+                        <span class="text-slate-300 text-xs">Expressway</span>
+                    </div>
+                    
+                    <button onclick="openDriverGuideModal()" class="ml-auto md:ml-2 px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition shadow-sm">
+                        <i class="fa-solid fa-circle-info"></i> Driving Tips
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search and Filter Bar -->
+            <div class="mt-6 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <!-- Search Input -->
+                <div class="relative w-full sm:w-80">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="search-input" placeholder="Search destination, mapcode, food..." 
+                           class="w-full pl-10 pr-4 py-2 bg-slate-800/80 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                </div>
+
+                <!-- Category Filter Pills -->
+                <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0 scrollbar-none" id="category-filters">
+                    <button data-cat="all" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white whitespace-nowrap transition">All Stops</button>
+                    <button data-cat="fa-car" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap transition"><i class="fa-solid fa-car mr-1 text-blue-400"></i> Drive</button>
+                    <button data-cat="fa-utensils" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap transition"><i class="fa-solid fa-utensils mr-1 text-amber-400"></i> Food</button>
+                    <button data-cat="fa-bed" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap transition"><i class="fa-solid fa-bed mr-1 text-indigo-400"></i> Stay</button>
+                    <button data-cat="fa-bag-shopping" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap transition"><i class="fa-solid fa-bag-shopping mr-1 text-pink-400"></i> Shopping</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+        <div class="flex flex-col sm:flex-row gap-6 lg:gap-8 items-start">
+            
+            <!-- Left Sidebar Column: Day Index & Navigation Summary -->
+            <aside class="w-full sm:w-1/3 lg:w-1/4 shrink-0 space-y-6 sm:sticky sm:top-6">
+                
+                <!-- Day Navigation (Index) -->
+                <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-sm">
+                    <h3 class="font-bold text-slate-900 text-base flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-calendar-days text-blue-600"></i> Itinerary Days
+                    </h3>
+                    <nav class="flex flex-row sm:flex-col gap-2 overflow-x-auto sm:overflow-visible pb-2 sm:pb-0 scrollbar-none" id="day-nav-tabs">
+                        <!-- Javascript will inject Day 1 - Day 5 buttons here -->
+                    </nav>
+                </div>
+
+                <!-- Quick Route Overview Card -->
+                <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hidden sm:block">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-map-location-dot text-blue-600"></i> Route Summary
+                        </h3>
+                        <span class="text-xs bg-slate-100 text-slate-600 font-medium px-2.5 py-1 rounded-full">5 Days</span>
+                    </div>
+                    
+                    <div class="space-y-3 text-sm">
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">1</div>
+                            <div>
+                                <h4 class="font-semibold text-slate-800">Haneda &rarr; Hakone</h4>
+                                <p class="text-xs text-slate-500">Ashinoko, Art Museum, Hakone Yumoto</p>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">2</div>
+                            <div>
+                                <h4 class="font-semibold text-slate-800">Hakone &rarr; Yamanakako</h4>
+                                <p class="text-xs text-slate-500">Owakudani, Gotemba Outlets, Glamping</p>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">3</div>
+                            <div>
+                                <h4 class="font-semibold text-slate-800">Lake Yamanaka Sightseeing</h4>
+                                <p class="text-xs text-slate-500">Nagaike, Hirano, Hoto Noodles, Flower Park</p>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">4</div>
+                            <div>
+                                <h4 class="font-semibold text-slate-800">Kawaguchiko & Makaino Farm</h4>
+                                <p class="text-xs text-slate-500">Oishi Park, Makaino Farm, Mt Fuji Views</p>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">5</div>
+                            <div>
+                                <h4 class="font-semibold text-slate-800">Kawaguchiko &rarr; Tokyo</h4>
+                                <p class="text-xs text-slate-500">Panoramic Ropeway, Kyobashi Hotel</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick MapCode Lookup Sidebar Widget -->
+                <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hidden sm:block">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-hashtag text-emerald-600"></i> MapCode Express
+                        </h3>
+                        <span class="text-[11px] text-slate-500">GPS Navigation</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-4">Tap any MapCode below to copy immediately into your Japanese car GPS unit.</p>
+                    
+                    <div class="max-h-60 overflow-y-auto space-y-2 pr-1" id="mapcode-quick-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Emergency Contacts Card -->
+                <div class="bg-amber-50/80 border border-amber-200/80 rounded-2xl p-4 text-xs text-amber-900 hidden sm:block">
+                    <h4 class="font-bold flex items-center gap-1.5 mb-2 text-amber-900">
+                        <i class="fa-solid fa-shield-halved text-amber-600"></i> Japan Driving Quick Tips
+                    </h4>
+                    <ul class="space-y-1.5 list-disc list-inside text-amber-800">
+                        <li>Drive on the <strong>LEFT</strong> side of the road.</li>
+                        <li>ETC Card: Ensure inserted into reader before toll gate.</li>
+                        <li>Emergency #s: Police <strong>110</strong>, Ambulance <strong>119</strong>.</li>
+                        <li>Japan Roadside Assistance (JAF): <strong>#8139</strong>.</li>
+                    </ul>
+                </div>
+
+            </aside>
+
+            <!-- Right Main Column: Itinerary Timeline -->
+            <div class="w-full sm:w-2/3 lg:w-3/4 space-y-8" id="itinerary-timeline-container">
+                <!-- Dynamic Days Rendered Here -->
+            </div>
+            
+        </div>
+    </main>
+
+    <!-- Driver Guide Modal -->
+    <div id="driver-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b pb-3">
+                <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-car text-blue-600"></i> Japan Driving Essential Info
+                </h3>
+                <button onclick="closeDriverGuideModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-3 text-sm text-slate-600">
+                <div class="p-3 bg-slate-50 rounded-xl">
+                    <h4 class="font-bold text-slate-800 mb-1"><i class="fa-solid fa-hashtag text-blue-500 mr-1"></i> How to use MapCodes</h4>
+                    <p class="text-xs">Select "MapCode" on your rental car's GPS unit, then key in the code (e.g. 57 094 692*80). It pins exact parking lots far better than phone numbers.</p>
+                </div>
+
+                <div class="p-3 bg-slate-50 rounded-xl">
+                    <h4 class="font-bold text-slate-800 mb-1"><i class="fa-solid fa-[#000] fa-road text-indigo-500 mr-1"></i> Tolls & ETC Card</h4>
+                    <p class="text-xs">Always use the purple <strong>ETC</strong> lane at toll gates if your rental includes an ETC card. Slow down to 20 km/h when entering.</p>
+                </div>
+
+                <div class="p-3 bg-slate-50 rounded-xl">
+                    <h4 class="font-bold text-slate-800 mb-1"><i class="fa-solid fa-gas-pump text-emerald-500 mr-1"></i> Gas Stations (Refueling)</h4>
+                    <p class="text-xs">Regular gasoline is usually the <strong>RED</strong> pump nozzle (レギュラー - Regular). High octane is YELLOW, Diesel is GREEN.</p>
+                </div>
+            </div>
+
+            <div class="pt-2 border-t text-right">
+                <button onclick="closeDriverGuideModal()" class="px-5 py-2.5 bg-blue-600 text-white font-semibold rounded-xl text-sm hover:bg-blue-700 transition">Got it!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 toast-notification flex items-center gap-3 px-4 py-3 bg-slate-900 text-white rounded-2xl shadow-xl border border-slate-700 text-sm">
+        <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-check text-xs"></i>
+        </div>
+        <span id="toast-message" class="font-medium">MapCode copied to clipboard!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-500">
+        <p>Japan Driving Itinerary &bull; 5-Day Interactive Map Guide</p>
+    </footer>
+
+    <script>
+        const itineraryData = [
+            {
+                day: 1,
+                title: "Day 1: Tokyo Arrival to Hakone",
+                subtitle: "Haneda Airport to Hakone Onsen & Museums",
+                badge: "Hakone Onsen",
+                stops: [
+                    {
+                        start: "羽田空港 (Haneda Airport)",
+                        destination: "Bakery & Table",
+                        navLink: "https://maps.app.goo.gl/FXVr9j5bpqHiCeSk7",
+                        embedQuery: "Bakery & Table 箱根",
+                        mapCode: "57 094 692*80",
+                        phone: "460-85-1530",
+                        icon: "fa-car",
+                        category: "fa-utensils"
+                    },
+                    {
+                        start: "On Route",
+                        destination: "海老名服務區 (Ebina Service Area - Rest Stop)",
+                        navLink: "https://maps.app.goo.gl/ZUXPt4vuHDm3Ccsb9",
+                        embedQuery: "Ebina Service Area",
+                        mapCode: "2 033 662*15",
+                        phone: "",
+                        icon: "fa-mug-hot",
+                        category: "fa-car"
+                    },
+                    {
+                        start: "Bakery & Table",
+                        destination: "平和鳥居 (Heiwa no Torii)",
+                        navLink: "",
+                        embedQuery: "Heiwa no Torii Hakone",
+                        mapCode: "",
+                        phone: "",
+                        icon: "fa-person-walking",
+                        category: "fa-car"
+                    },
+                    {
+                        start: "平和鳥居 (Heiwa no Torii)",
+                        destination: "芦之湖 Terrace (Ashinoko Terrace)",
+                        navLink: "",
+                        embedQuery: "Ashinoko Terrace",
+                        mapCode: "",
+                        phone: "",
+                        icon: "fa-person-walking",
+                        category: "fa-utensils"
+                    },
+                    {
+                        start: "Bakery & Table",
+                        destination: "雕刻之森美術館 (The Hakone Open-Air Museum)",
+                        navLink: "https://maps.app.goo.gl/Ft7ztS2GaBFyzMWR7",
+                        embedQuery: "The Hakone Open-Air Museum",
+                        mapCode: "57 276 043*71",
+                        phone: "460-82-1161",
+                        icon: "fa-car",
+                        category: "fa-car"
+                    },
+                    {
+                        start: "雕刻之森美術館",
+                        destination: "箱根湯本商店街 (Hakone Yumoto Shopping Street)",
+                        navLink: "https://maps.app.goo.gl/XKz3JrighJaZKbj47",
+                        embedQuery: "Hakone Yumoto Shopping Street",
+                        mapCode: "57 222 865*40",
+                        phone: "",
+                        icon: "fa-car",
+                        category: "fa-bag-shopping"
+                    },
+                    {
+                        start: "箱根湯本商店街",
+                        destination: "季の湯 雪月花 (Tokinoyu Setsugetsuka)",
+                        navLink: "https://maps.app.goo.gl/ghANNs2SFrWGh7RM9",
+                        embedQuery: "Tokinoyu Setsugetsuka Hakone",
+                        mapCode: "57 276 484*85",
+                        phone: "460-86-1222",
+                        icon: "fa-bed",
+                        category: "fa-bed"
+                    }
+                ]
+            },
+            {
+                day: 2,
+                title: "Day 2: Owakudani & Gotemba Outlets",
+                subtitle: "Hakone Valley to Yamanakako Glamping",
+                badge: "Mt Fuji Views",
+                stops: [
+                    {
+                        start: "季の湯 雪月花",
+                        destination: "大涌谷 (Owakudani)",
+                        navLink: "https://maps.app.goo.gl/LLJWGH2wCScfyEzd7",
+                        embedQuery: "Owakudani Hakone",
+                        mapCode: "57 272 188*65",
+                        phone: "",
+                        icon: "fa-car",
+                        category: "fa-car"
+                    },
+                    {
+                        start: "大涌谷",
+                        destination: "御殿場 Premium Outlets (Gotemba Premium Outlets)",
+                        navLink: "https://maps.app.goo.gl/RYCSE27t525MJvEf6",
+                        embedQuery: "Gotemba Premium Outlets",
+                        mapCode: "50 805 264*61",
+                        phone: "",
+                        icon: "fa-bag-shopping",
+                        category: "fa-bag-shopping"
+                    },
+                    {
+                        start: "御殿場 Premium Outlets",
+                        destination: "VISION Glamping & Spa Yamanakako",
+                        navLink: "https://maps.app.goo.gl/177pEqMxnjdXteiZ9",
+                        embedQuery: "VISION Glamping Resort Yamanakako",
+                        mapCode: "161 071 267*27",
+                        phone: "120-522-085",
+                        icon: "fa-campground",
+                        category: "fa-bed"
+                    }
+                ]
+            },
+            {
+                day: 3,
+                title: "Day 3: Lake Yamanaka Exploration",
+                subtitle: "Scenic Parks, Swan Beaches & Gourmet Hoto",
+                badge: "Yamanakako",
+                stops: [
+                    {
+                        start: "VISION Glamping & Spa",
+                        destination: "長池親水公園 (Nagaike Shinsui Park)",
+                        navLink: "https://maps.app.goo.gl/oYHhoF7iyTDAzstx5",
+                        embedQuery: "Nagaike Shinsui Park",
+                        mapCode: "161 044 256*50",
+                        phone: "",
+                        icon: "fa-car",
+                        category: "fa-car"
+                    },
+                    {
+                        start: "Near Nagaike",
+                        destination: "白鳥之浜 (Shiratori no Hama)",
+                        navLink: "",
+                        embedQuery: "Shiratori no Hama Yamanakako",
+                        mapCode: "161 043 392*35",
+                        phone: "",
+                        icon: "fa-camera",
+                        category: "fa-car"
+                    },
+                    {
+                        start: "長池親水公園",
+                        destination: "平野之浜 (Hirano no Hama)",
+                        navLink: "https://maps.app.goo.gl/G8uJzgqpDDz5BrqW7",
+                        embedQuery: "Hirano no Hama",
+                        mapCode: "161 018 872*13",
+                        phone: "",
+                        icon: "fa-car",
+                        category: "fa-car"
+                    },
+                    {
+                        start: "平野之浜",
+                        destination: "(小作餺飥烏龍麵) 山中湖店 (Kosaku Hoto)",
+                        navLink: "https://maps.app.goo.gl/5jh3WyospCDbnB1f9",
+                        embedQuery: "Kosaku Hoto Yamanakako",
+                        mapCode: "434 283 607*21",
+                        phone: "",
+                        icon: "fa-utensils",
+                        category: "fa-utensils"
+                    },
+                    {
+                        start: "Nearby",
+                        destination: "Paper Moon Cake & Cafe",
+                        navLink: "https://maps.app.goo.gl/J1Hbq1pZ4kNzVit8A",
+                        embedQuery: "Paper Moon Yamanakako",
+                        mapCode: "434 286 507*22",
+                        phone: "",
+                        icon: "fa-cake-candles",
+                        category: "fa-utensils"
+                    },
+                    {
+                        start: "Nearby",
+                        destination: "The PARK",
+                        navLink: "https://maps.app.goo.gl/VSq2Zxt2T5yCTv1o7",
+                        embedQuery: "The PARK Yamanakako",
+                        mapCode: "161 044 305*52",
+                        phone: "",
+                        icon: "fa-tree",
+                        category: "fa-car"
+                    },
+                    {
+                        start: "Paper Moon",
+                        destination: "花之都公園 (Hananomiyako Park)",
+                        navLink: "https://maps.app.goo.gl/t1Ud3YeECuw3LtkH7",
+                        embedQuery: "Hananomiyako Park",
+                        mapCode: "161 072 634*32",
+                        phone: "",
+                        icon: "fa-car",
+                        category: "fa-car"
+                    },
+                    {
+                        start: "花之都公園",
+                        destination: "VISION Glamping & Spa",
+                        navLink: "https://maps.app.goo.gl/177pEqMxnjdXteiZ9",
+                        embedQuery: "VISION Glamping Resort Yamanakako",
+                        mapCode: "",
+                        phone: "",
+                        icon: "fa-campground",
+                        category: "fa-bed"
+                    }
+                ]
+            },
+            {
+                day: 4,
+                title: "Day 4: Lake Kawaguchi & Makaino Farm",
+                subtitle: "Oishi Park, Farm Sightseeing & Hotel Onsen",
+                badge: "Kawaguchiko",
+                stops: [
+                    {
+                        start: "VISION Glamping & Spa",
+                        destination: "大石公園 & 自然生活館 (Oishi Park & Natural Living Center)",
+                        navLink: "https://maps.app.goo.gl/cr8LM5W3tNWq4rsj9",
+                        embedQuery: "Oishi Park Kawaguchiko",
+                        mapCode: "59 089 764*64",
+                        phone: "555-76-8230",
+                        icon: "fa-car",
+                        category: "fa-car"
+                    },
+                    {
+                        start: "大石公園",
+                        destination: "馬飼野牧場 駐車場 (Makaino Farm Parking)",
+                        navLink: "https://maps.app.goo.gl/K61ND8Wzmy9mEbSB9",
+                        embedQuery: "Makaino Farm",
+                        mapCode: "312 025 455*51",
+                        phone: "0544-54-0342",
+                        icon: "fa-cow",
+                        category: "fa-car"
+                    },
+                    {
+                        start: "馬飼野牧場",
+                        destination: "Fuji View Hotel 富士豪景飯店",
+                        navLink: "https://maps.app.goo.gl/t6Eddx2uCrgT4tu56",
+                        embedQuery: "Fuji View Hotel",
+                        mapCode: "59 058 018*10",
+                        phone: "0555-83-2211",
+                        icon: "fa-hotel",
+                        category: "fa-bed"
+                    },
+                    {
+                        start: "Fuji View Hotel",
+                        destination: "Hoto Fudo (Higashikoiji) 餺飥不動",
+                        navLink: "https://maps.app.goo.gl/dGf2M6eLoHSHgbPJ9",
+                        embedQuery: "Hoto Fudo Higashikoiji",
+                        mapCode: "161 270 113*43",
+                        phone: "555-72-8511",
+                        icon: "fa-utensils",
+                        category: "fa-utensils"
+                    },
+                    {
+                        start: "Fuji View Hotel",
+                        destination: "Moose Hills Burger",
+                        navLink: "https://maps.app.goo.gl/cqBPMv2pG1E38cDi9",
+                        embedQuery: "Moose Hills Burger",
+                        mapCode: "689 553 391*52",
+                        phone: "555-72-6691",
+                        icon: "fa-burger",
+                        category: "fa-utensils"
+                    }
+                ]
+            },
+            {
+                day: 5,
+                title: "Day 5: Panoramic Ropeway & Return to Tokyo",
+                subtitle: "Mt Fuji Ropeway to Kyobashi Mitsui Garden Hotel",
+                badge: "Tokyo Return",
+                stops: [
+                    {
+                        start: "Fuji View Hotel",
+                        destination: "富士山全景纜車 (Mt. Fuji Panoramic Ropeway)",
+                        navLink: "https://maps.app.goo.gl/cXoxD9A7ksqtSaeG8",
+                        embedQuery: "Mt. Fuji Panoramic Ropeway",
+                        mapCode: "161 302 469*66",
+                        phone: "555-75-2929",
+                        icon: "fa-cable-car",
+                        category: "fa-car"
+                    },
+                    {
+                        start: "富士山全景纜車",
+                        destination: "東京京橋三井花園飯店 (Mitsui Garden Hotel Kyobashi)",
+                        navLink: "https://maps.app.goo.gl/SQhxKHKrcxRXw5ys8",
+                        embedQuery: "Mitsui Garden Hotel Kyobashi",
+                        mapCode: "647 404*71",
+                        phone: "3-3231-3131",
+                        icon: "fa-car-side",
+                        category: "fa-bed"
+                    }
+                ]
+            }
+        ];
+
+        let activeCategory = 'all';
+        let searchQuery = '';
+        let activeDay = 1;
+
+        function initApp() {
+            renderDayTabs();
+            renderItinerary();
+            renderQuickMapCodes();
+            calculateStats();
+            setupEventListeners();
+        }
+
+        function calculateStats() {
+            let total = 0;
+            itineraryData.forEach(d => total += d.stops.length);
+            document.getElementById('total-stops-count').innerText = total;
+        }
+
+        function renderDayTabs() {
+            const tabsNav = document.getElementById('day-nav-tabs');
+            tabsNav.innerHTML = '';
+
+            itineraryData.forEach(d => {
+                const btn = document.createElement('button');
+                btn.onclick = () => {
+                    activeDay = d.day;
+                    renderDayTabs(); // update active state styling
+                    renderItinerary();
+                };
+                
+                const isActive = activeDay === d.day;
+                let baseClasses = 'w-full text-left px-4 py-3 rounded-xl text-sm font-bold tracking-tight whitespace-nowrap transition flex items-center justify-between gap-3 border ';
+                
+                if (isActive) {
+                    baseClasses += 'bg-blue-600 text-white border-blue-600 shadow-md';
+                    btn.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-white/20 text-white text-[11px] flex items-center justify-center font-extrabold shrink-0">${d.day}</span>
+                            <span class="truncate">Day ${d.day}</span>
+                        </div>
+                        <span class="font-normal text-blue-200 text-[10px] uppercase tracking-wider hidden sm:block">${d.badge}</span>
+                    `;
+                } else {
+                    baseClasses += 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200/80 hover:border-slate-300';
+                    btn.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-white border border-slate-200 text-slate-700 text-[11px] flex items-center justify-center font-extrabold shrink-0">${d.day}</span>
+                            <span class="truncate">Day ${d.day}</span>
+                        </div>
+                        <span class="font-normal text-slate-400 text-[10px] uppercase tracking-wider hidden sm:block">${d.badge}</span>
+                    `;
+                }
+                
+                btn.className = baseClasses;
+                tabsNav.appendChild(btn);
+            });
+        }
+
+        function renderItinerary() {
+            const container = document.getElementById('itinerary-timeline-container');
+            container.innerHTML = '';
+
+            let dataToRender = itineraryData;
+            
+            // Show only the active day unless there is an active search query
+            if (!searchQuery) {
+                dataToRender = itineraryData.filter(d => d.day === activeDay);
+            }
+
+            let hasResults = false;
+
+            dataToRender.forEach((dayData) => {
+                // Filter stops based on search and category
+                const filteredStops = dayData.stops.filter(stop => {
+                    const matchesCategory = activeCategory === 'all' || stop.category === activeCategory || stop.icon === activeCategory;
+                    const matchesSearch = !searchQuery || 
+                        stop.destination.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        (stop.start && stop.start.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                        (stop.mapCode && stop.mapCode.toLowerCase().includes(searchQuery.toLowerCase()));
+                    return matchesCategory && matchesSearch;
+                });
+
+                if (filteredStops.length === 0 && (searchQuery || activeCategory !== 'all')) {
+                    return; // Skip empty filtered day
+                }
+
+                hasResults = true;
+
+                const dayCard = document.createElement('section');
+                dayCard.id = `day-${dayData.day}`;
+                dayCard.className = 'animate-fade-in bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden';
+
+                // Day Header Section
+                dayCard.innerHTML = `
+                    <div class="p-6 bg-slate-900 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="bg-blue-500 text-white text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full tracking-wider">Day ${dayData.day}</span>
+                                <span class="text-xs text-slate-400 font-medium">${dayData.badge}</span>
+                            </div>
+                            <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">${dayData.title}</h2>
+                            <p class="text-xs sm:text-sm text-slate-300 mt-0.5">${dayData.subtitle}</p>
+                        </div>
+                        <div class="self-start sm:self-center">
+                            <span class="bg-slate-800 text-slate-300 border border-slate-700 text-xs px-3 py-1.5 rounded-full font-semibold">
+                                ${filteredStops.length} Destinations
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 sm:p-8 space-y-8" id="stops-container-day-${dayData.day}"></div>
+                `;
+
+                container.appendChild(dayCard);
+                const stopsContainer = dayCard.querySelector(`#stops-container-day-${dayData.day}`);
+
+                filteredStops.forEach((stop, index) => {
+                    const isLast = index === filteredStops.length - 1;
+                    const stopCard = document.createElement('div');
+                    stopCard.className = `relative pl-8 sm:pl-10 ${isLast ? '' : 'pb-8 border-l-2 border-slate-200'}`;
+
+                    const mapEmbedUrl = stop.embedQuery ? 
+                        `https://maps.google.com/maps?q=${encodeURIComponent(stop.embedQuery)}&t=m&z=14&output=embed&iwloc=near` : '';
+
+                    stopCard.innerHTML = `
+                        <!-- Timeline Node Icon -->
+                        <div class="absolute -left-[17px] top-0 bg-blue-600 border-4 border-white rounded-full w-8 h-8 flex items-center justify-center text-white shadow-md">
+                            <i class="fa-solid ${stop.icon} text-xs"></i>
+                        </div>
+
+                        <!-- Stop Details Card -->
+                        <div class="stop-card bg-slate-50 border border-slate-200/90 rounded-2xl p-5 sm:p-6">
+                            
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                                <div>
+                                    ${stop.start ? `<p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5"><i class="fa-solid fa-location-arrow text-blue-500 mr-1"></i> From: ${stop.start}</p>` : ''}
+                                    <h3 class="text-lg sm:text-xl font-bold text-slate-900 leading-snug">${stop.destination}</h3>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    ${stop.navLink ? `
+                                        <a href="${stop.navLink}" target="_blank" rel="noopener noreferrer" 
+                                           class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl shadow-xs transition">
+                                            <i class="fa-solid fa-map-pin"></i> Open Map
+                                        </a>
+                                    ` : ''}
+                                </div>
+                            </div>
+
+                            <!-- MapCode and Phone Bar -->
+                            <div class="flex flex-wrap items-center gap-2 mb-4">
+                                ${stop.mapCode ? `
+                                    <button onclick="copyToClipboard('${stop.mapCode}', 'MapCode')" 
+                                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/80 text-xs font-semibold text-emerald-800 transition">
+                                        <i class="fa-solid fa-hashtag text-emerald-600"></i> MapCode: <span class="font-mono">${stop.mapCode}</span>
+                                        <i class="fa-regular fa-copy text-emerald-600 ml-1"></i>
+                                    </button>
+                                ` : ''}
+
+                                ${stop.phone ? `
+                                    <a href="tel:${stop.phone}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-xs font-medium text-slate-700 hover:bg-slate-100 transition">
+                                        <i class="fa-solid fa-phone text-blue-500"></i> ${stop.phone}
+                                    </a>
+                                ` : ''}
+                            </div>
+
+                            <!-- Interactive Map Preview Section -->
+                            ${stop.embedQuery ? `
+                                <div class="mt-3">
+                                    <details class="group bg-white rounded-xl border border-slate-200/80 overflow-hidden">
+                                        <summary class="cursor-pointer px-4 py-2.5 text-xs font-semibold text-slate-600 hover:text-blue-600 flex items-center justify-between select-none">
+                                            <span class="flex items-center gap-1.5">
+                                                <i class="fa-solid fa-map text-slate-400 group-open:text-blue-500"></i> Toggle Embedded Map View
+                                            </span>
+                                            <i class="fa-solid fa-chevron-down text-xs transition-transform group-open:rotate-180"></i>
+                                        </summary>
+                                        <div class="h-64 sm:h-72 w-full bg-slate-100 relative border-t border-slate-100">
+                                            <iframe loading="lazy" src="${mapEmbedUrl}" class="absolute inset-0 w-full h-full border-0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                                        </div>
+                                    </details>
+                                </div>
+                            ` : ''}
+
+                        </div>
+                    `;
+
+                    stopsContainer.appendChild(stopCard);
+                });
+            });
+
+            if (!hasResults) {
+                container.innerHTML = `
+                    <div class="bg-white rounded-3xl p-12 text-center border border-slate-200">
+                        <i class="fa-solid fa-magnifying-glass text-4xl text-slate-300 mb-3"></i>
+                        <h3 class="text-lg font-bold text-slate-700">No matching stops found</h3>
+                        <p class="text-xs text-slate-500 mt-1">Try resetting search filters or category selection.</p>
+                        <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-xl">Reset Filters</button>
+                    </div>
+                `;
+            }
+        }
+
+        function renderQuickMapCodes() {
+            const list = document.getElementById('mapcode-quick-list');
+            list.innerHTML = '';
+
+            itineraryData.forEach(day => {
+                day.stops.forEach(stop => {
+                    if (stop.mapCode) {
+                        const item = document.createElement('div');
+                        item.className = 'flex items-center justify-between p-2 rounded-xl hover:bg-slate-50 text-xs border border-transparent hover:border-slate-200 transition cursor-pointer';
+                        item.onclick = () => copyToClipboard(stop.mapCode, stop.destination);
+                        item.innerHTML = `
+                            <span class="font-medium text-slate-700 truncate pr-2 max-w-[170px]">${stop.destination}</span>
+                            <span class="font-mono bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded text-[11px] font-semibold shrink-0">${stop.mapCode}</span>
+                        `;
+                        list.appendChild(item);
+                    }
+                });
+            });
+        }
+
+        function copyToClipboard(text, label) {
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showToast(`Copied ${label} (${text})`);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        function openDriverGuideModal() {
+            const modal = document.getElementById('driver-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeDriverGuideModal() {
+            const modal = document.getElementById('driver-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function resetFilters() {
+            activeCategory = 'all';
+            searchQuery = '';
+            // activeDay is deliberately not reset here so users stay on their chosen day
+            document.getElementById('search-input').value = '';
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if(btn.dataset.cat === 'all') {
+                    btn.className = 'cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white whitespace-nowrap transition';
+                } else {
+                    btn.className = 'cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap transition';
+                }
+            });
+            renderItinerary();
+        }
+
+        function setupEventListeners() {
+            // Search Input Listener
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                searchQuery = e.target.value.trim();
+                renderItinerary();
+            });
+
+            // Category Filter Buttons
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    activeCategory = btn.dataset.cat;
+                    document.querySelectorAll('.cat-btn').forEach(b => {
+                        b.className = 'cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap transition';
+                    });
+                    btn.className = 'cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white whitespace-nowrap transition';
+                    renderItinerary();
+                });
+            });
+        }
+
+        window.onload = function() {
+            initApp();
+        };
+    </script>
+</body>
+</html>
